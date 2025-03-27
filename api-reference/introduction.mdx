@@ -1,33 +1,53 @@
 ---
 title: 'Introduction'
-description: 'Example section for showcasing API endpoints'
+description: 'Overview of the E-commerce Platform API endpoints and authentication.'
 ---
 
 <Note>
-  If you're not looking to build API reference documentation, you can delete
-  this section by removing the api-reference folder.
+  This documentation utilizes an OpenAPI specification to automatically generate
+  the API reference sections that follow.
 </Note>
 
 ## Welcome
 
-There are two ways to build API documentation: [OpenAPI](https://mintlify.com/docs/api-playground/openapi/setup) and [MDX components](https://mintlify.com/docs/api-playground/mdx/configuration). For the starter kit, we are using the following OpenAPI specification.
+This documentation provides details for the E-commerce Platform API. It allows developers to interact with various platform features like user management, product catalogs, orders, payments, and administrative functions.
+
+The API reference sections are generated using the following OpenAPI specification.
 
 <Card
-  title="Plant Store Endpoints"
-  icon="leaf"
-  href="https://github.com/mintlify/starter/blob/main/api-reference/openapi.json"
+  title="E-commerce API Specification"
+  icon="shopping-cart" // Or use "tag", "store", "code-block" etc.
+  href="/path/to/your/openapi.json" // OR Link to GitHub: https://github.com/your-username/your-repo/blob/main/path/to/openapi.json
 >
   View the OpenAPI specification file
 </Card>
 
 ## Authentication
 
-All API endpoints are authenticated using Bearer tokens and picked up from the specification file.
+Most API endpoints require authentication using **Bearer Tokens**. You should include the token, obtained after successful login (`/api/v1/auth/login`), in the `Authorization` header of your subsequent requests.
+
+**Example Header:**
+`Authorization: Bearer <YOUR_ACCESS_TOKEN>`
+
+Publicly accessible endpoints, such as user registration (`/api/v1/auth/register`) or public product listing (`/api/v1/products`), do not require authentication. These are typically marked without a security requirement in the specification.
+
+Authentication requirements are defined within the OpenAPI specification using `securitySchemes` and applied via the `security` field (either globally or per-endpoint):
 
 ```json
+"components": {
+  "securitySchemes": {
+    "bearerAuth": {
+      "type": "http",
+      "scheme": "bearer",
+      "bearerFormat": "JWT",
+      "description": "JWT Authentication using Bearer token"
+    }
+    // ... other schemes like googleOAuth might be defined here
+  }
+},
 "security": [
+  // Security requirements applied globally or per path/operation
   {
     "bearerAuth": []
   }
 ]
-```
